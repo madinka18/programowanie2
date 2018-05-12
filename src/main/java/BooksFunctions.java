@@ -53,19 +53,15 @@ public class BooksFunctions {
     public List <Book> booksContainingTintheTitle(List <Book> books) {
         return books.stream().filter(book -> book.getName().startsWith("T")).filter(book -> book.getYear() > 2009).collect(Collectors.toList());
     }
-     public List<Book> adding100ToTheYearOfPublication (List <Book> books){
+
+    public List <Book> adding100ToTheYearOfPublication(List <Book> books) {
         books.stream().forEach(book -> book.setYear(book.getYear() + 100));
         return books;
     }
-    public List<Book> dividedByTwo(List<Book> books){
+
+    public List <Book> dividedByTwo(List <Book> books) {
         List <Book> collect = books.stream().filter(book -> book.getYear() % 2 == 0).collect(Collectors.toList());
         return collect;
     }
 
- //   public Author numberOfBooksPublishedByTheAuthor (List<Author> authors, List<Book> books ){
-   // return authors.stream().
-//   }
-////    public List <Book> booksDesignPatterns(List<Book> books){
-//        return books.stream().filter(book -> book.getCategoria() == 1).collect(Collectors.toList());
-//    }
 }
