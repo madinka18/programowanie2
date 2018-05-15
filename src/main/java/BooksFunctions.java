@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,13 +56,32 @@ public class BooksFunctions {
     }
 
     public List <Book> adding100ToTheYearOfPublication(List <Book> books) {
-        books.stream().forEach(book -> book.setYear(book.getYear() + 100));
+        books.forEach(book -> book.setYear(book.getYear() + 100));
         return books;
     }
 
     public List <Book> dividedByTwo(List <Book> books) {
-        List <Book> collect = books.stream().filter(book -> book.getYear() % 2 == 0).collect(Collectors.toList());
-        return collect;
+        return books.stream().filter(book -> book.getYear() % 2 == 0).collect(Collectors.toList());
+    }
+
+    public void countingAuthorsBooks(List <Book> books, List <Author> authors) {
+        for (Author author : authors) {
+            System.out.println(author + ", ilość książek: " + getCount(author, books));
+            System.out.println();
+        }
+
+    }
+
+    private int getCount(Author author, List <Book> books) {
+        int count = 0;
+        for (Book book : books) {
+            for (Author author1 : book.getAuthors()) {
+                if (author1.getId() == author.getId()) {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 
 }

@@ -1,5 +1,8 @@
 
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -20,8 +23,7 @@ public class Bookstore {
     private static BookDisplay bookDisplay = new TitleFirstBookDisplay();
 
 
-
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         importAuthors.importAutors();
         importCategories.importCategories();
         importcsv.importcsv();
@@ -31,25 +33,21 @@ public class Bookstore {
         System.out.println();
     }
 
-    private static void menuDisplay() {
+    private static void menuDisplay() throws FileNotFoundException {
         int selectedNumber;
         do {
             System.out.println("Proszę wybrać opcje:" + "\n" +
 
-                    "1 - wyjście" + "\n" +
-                    "2 - podanie kontaktu do księgarni" + "\n" +
-                    "3 - wyświetlenie katalogu książek" + "\n" +
-                    "4 - wyświetlenie autorów" + "\n" +
-                    "5 - wyświetlenie książek wydanych po 2003r." + "\n" +
-                    "6 - sortowanie książek po roku wydania rosnąco," + "\n" +
-                    "7 - sortowanie książek po roku wydania malejąco" + "\n" +
-                    "8 - wyświetlanie książek zaczynając od roku wydania" + "\n" +
-                    "9 - wyświetlanie książek zaczynając od ISBN" + "\n" +
-                    "10 - wyświetlanie kategorii książek" + "\n" +
-                    "11 - wyświetlanie książek z kategorii Wzorce projektowe" + "\n" +
-                    "12 - dodaj nowego autora" + "\n" +
-                    "13 - Zamawianie dodruku książki" + "\n" +
-                    "14 - Edytowanie tytułu książek");
+                    "1 - wyjście" + "\n" + "2 - podanie kontaktu do księgarni" + "\n" +
+                    "3 - wyświetlenie katalogu książek" + "\n" + "4 - wyświetlenie autorów" + "\n" +
+                    "5 - wyświetlenie książek wydanych po 2003r." + "\n" + "6 - sortowanie książek po roku wydania rosnąco," + "\n" +
+                    "7 - sortowanie książek po roku wydania malejąco" + "\n" + "8 - wyświetlanie książek zaczynając od roku wydania" + "\n" +
+                    "9 - wyświetlanie książek zaczynając od ISBN" + "\n" + "10 - wyświetlanie kategorii książek" + "\n" +
+                    "11 - wyświetlanie książek z kategorii Wzorce projektowe" + "\n" + "12 - dodaj nowego autora" + "\n" +
+                    "13 - zamawianie dodruku książki" + "\n" + "14 - edytowanie tytułu książek" + "\n" +
+                    "15 - wyświetlanie iość książek napisanych przez autorów" + "\n" + "16 - wyświetlanie pensji pracowników" + "\n" +
+                    "17 - zapisywanie listy autorów do pliku" + "\n" + "18 - zmiana wieku autora" + "\n" +
+                    "19 - zapis listy categorii do pliku" + "\n");
 
             System.out.println();
 
@@ -114,18 +112,17 @@ public class Bookstore {
                 case 13:
                     System.out.println("Którą książkę chcesz dodrukować, podaj ISBN");
 
-                    List<Book> bookList1 = instance.getAllBooks();
+                    List <Book> bookList1 = instance.getAllBooks();
                     String isbn = scanner.next();
                     Book printableBook = booksFunctions.findBooksISBN(bookList1, isbn);
 
                     OrderReprint orderReprint;
-                   if (printableBook.getCover().equals("M")){
-                       orderReprint = new SoftCoverOrderReprint();
-                   }
-                       else {
-                       orderReprint = new HardCoverOrderReprint();
-                   }
-                   orderReprint.orderReprint();
+                    if (printableBook.getCover().equals("M")) {
+                        orderReprint = new SoftCoverOrderReprint();
+                    } else {
+                        orderReprint = new HardCoverOrderReprint();
+                    }
+                    orderReprint.orderReprint();
 
 
                     break;
@@ -135,19 +132,58 @@ public class Bookstore {
                     List <Book> bookList = instance.getAllBooks();
                     Book bookToChenge = booksFunctions.findBooksISBN(bookList, isbn1);
                     System.out.println("Podaj poprawny tytuł");
-                    String newNameBook =  scanner2.nextLine();
+                    String newNameBook = scanner2.nextLine();
                     bookToChenge.setName(newNameBook);
                     System.out.println(bookList);
                     break;
                 case 15:
-                    System.out.println("Podaj identyfikator autora");
-                    Scanner in = new Scanner(System.in);
-                    int idAuthor = in.nextInt();
-                    List<Book> bookList2 = instance.getAllBooks();
-//                    bookList2.stream().filter((Book book) -> book.getAuthors().
+                    List <Book> bookList2 = instance.getAllBooks();
+                    List <Author> authors = instance1.getAllAuthors();
+                    booksFunctions.countingAuthorsBooks(bookList2, authors);
+                    break;
+                case 16:
+                    Manager manager = new Manager("Piotr", "Nowak", "bc@biuro.om", 42, 50, 160);
+                    Salesman salesman = new Salesman("Ewa", "Kowalska", "kowalska@bookstore.com", 21, 1800);
+                    Trainee trainee = new Trainee("Darek", "Malinowski", "malinowski@bookstore.com", 19, 15, 20);
+                    List <Employee> employees = new ArrayList <>();
+                    employees.add(manager);
+                    employees.add(salesman);
+                    employees.add(trainee);
 
+                    for (Employee employee : employees) {
+                        System.out.println(employee + " pensja " + employee.monthlyPaymenty());
+                        System.out.println();
+                    }
+                    break;
+                case 17:
+                    List <Author> authors1 = instance1.getAllAuthors();
+                    PrintWriter zapis = new PrintWriter("src\\main\\resources\\authors1.csv");
+                    for (Author author1 : authors1) {
+                        zapis.println(String.valueOf(author1));
+                    }
+                    zapis.close();
+                    break;
+                case 18:
+                    List <Author> authorList1 = instance1.getAllAuthors();
+                    System.out.println("Podaj id autora, którego wiek chcesz zmienić");
+                    Scanner scanner3 = new Scanner(System.in);
+                    int idAuthor = scanner3.nextInt();
+                    Author authorToChenge = authorList1.get(idAuthor - 1);
+                    System.out.println("Podaj poprawny wiek autora");
+                    int newAgeAuthor = scanner3.nextInt();
+                    authorToChenge.setAuthorAge(newAgeAuthor);
+                    System.out.println(authorList1);
+                    break;
+                case 19:
+                    List <Categoria> categoriaList = instance2.getAllCategories();
+                    PrintWriter categoria = new PrintWriter("src\\main\\resources\\categories1.csv");
+                    for (Categoria  categoria1 :categoriaList) {
+                        categoria.println(categoria1);
+                    }
+                    categoria.close();
             }
-        }  while (selectedNumber != 1) ;
+
+        } while (selectedNumber != 1);
 
     }
 }

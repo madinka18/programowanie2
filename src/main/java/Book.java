@@ -31,7 +31,7 @@ class Book {
         this.year = year;
     }
 
-    public Book(String name, String isbn, int year, String cover, List<Author> authors, Categoria categoria) {
+    public Book(String name, String isbn, int year, String cover, List <Author> authors, Categoria categoria) {
         this.name = name;
         this.isbn = isbn;
         this.year = year;

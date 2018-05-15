@@ -22,9 +22,5 @@ public class BookDate {
 
         return books;
     }
-  //  public Author countingAutorsBook (){
-    //    return books.stream().filter(book -> book.getAuthors().stream().filter(author -> author.getId() == id)
-
-    //}
 
 }
